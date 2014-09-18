@@ -1,4 +1,13 @@
-cd ~/src/savanna
+cd ~/src/sahara
+source ~/src/sahara/.tox/venv/bin/activate
+
+## needed to run sahara cli
+export OS_AUTH_URL=http://127.0.0.1:5000/v2.0/
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=admin
+## end of sahara cli stuff
+
 export TOKEN=$(tools/get_auth_token | grep "Auth token:" | awk '{print $3}')
 export TENANT=$(tools/get_auth_token | grep "Tenant \[admin\]" | awk '{print $4}')
 
@@ -26,9 +35,28 @@ rm ~/src/cluster.tmp.bak
 
 #register our image
 #get the image id for our known image
-export AUTH_URL="http://192.168.1.44:5000/v2.0"
+export AUTH_URL="http://127.0.0.1:5000/v2.0"
 
-export IMAGE_ID=$(nova --os-username=admin --os-tenant-name=admin --os-password=admin --os-auth-url=$AUTH_URL image-list | grep fedora-hdp.image | awk {'print $2'})
-http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID X-Auth-Token:$TOKEN < ~/src/image.reg
+#echo "Setting up ubuntu oozie image"
+export IMAGE_ID=$(nova --os-username=admin --os-tenant-name=admin --os-password=admin --os-auth-url=$AUTH_URL image-list | grep ubuntu-oozie-hdp.image | awk {'print $2'})
+http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID X-Auth-Token:$TOKEN < ~/src/ubu-image.reg
 http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID/tag X-Auth-Token:$TOKEN < ~/src/tags.reg
 
+export IMAGE_ID=$(nova --os-username=admin --os-tenant-name=admin --os-password=admin --os-auth-url=$AUTH_URL image-list | grep fedora | awk {'print $2'})
+http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID X-Auth-Token:$TOKEN < ~/src/fedora-image.reg
+http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID/tag X-Auth-Token:$TOKEN < ~/src/tags.reg
+
+export IMAGE_ID=$(nova --os-username=admin --os-tenant-name=admin --os-password=admin --os-auth-url=$AUTH_URL image-list | grep icehouse | awk {'print $2'})
+http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID X-Auth-Token:$TOKEN < ~/src/fedora-image.reg
+http http://localhost:18080/v1.0/$TENANT/images/$IMAGE_ID/tag X-Auth-Token:$TOKEN < ~/src/tags.reg
+
+#sample data sources
+echo "Setting up sample data sources"
+http http://localhost:18080/v1.1/$TENANT/data-sources X-Auth-Token:$TOKEN < ~/src/output.tmp
+http http://localhost:18080/v1.1/$TENANT/data-sources X-Auth-Token:$TOKEN < ~/src/output2.tmp
+http http://localhost:18080/v1.1/$TENANT/data-sources X-Auth-Token:$TOKEN < ~/src/input.tmp
+
+#sample pig job binary
+#http PUT http://localhost:18080/v1.1/$TENANT/job-binary-internals/script.pig X-Auth-Token:$TOKEN < ../jobbinary.txt
+
+#http http://localhost:18080/v1.1/$TENANT/jobs X-Auth-Token:$TOKEN < ../job.tmp
