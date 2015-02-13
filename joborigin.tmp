@@ -1,0 +1,7 @@
+{
+"name": "sample job origin",
+"description": "sample job origin",
+"storage_type": "swift",
+"url": "swift://192.168.1.44:8080/job",
+"credentials": {"user": "admin", "password": "admin"}
+}

@@ -1,11 +1,14 @@
 {
     "plugin_name": "vanilla",
-    "hadoop_version": "1.1.2",
+    "hadoop_version": "1.2.1",
     "node_processes": [
         "namenode",
         "jobtracker",
-        "secondarynamenode"
+        "secondarynamenode",
+        "hiveserver",
+        "oozie"
     ],
     "name": "master",
-    "flavor_id": "0"
+    "flavor_id": "55",
+    "security_groups": ["1"]
 }

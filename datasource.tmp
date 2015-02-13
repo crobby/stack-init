@@ -1,0 +1,7 @@
+{
+"name": "sample input",
+"description": "sample input",
+"type": "swift",
+"url": "swift://inputcontainer.savanna/sampletext",
+"credentials": {"user": "admin", "password": "admin"}
+}

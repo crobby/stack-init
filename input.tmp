@@ -1,0 +1,7 @@
+{
+"name": "piginput",
+"description": "pig input",
+"type": "swift",
+"url": "swift://croberts.sahara/piginput",
+"credentials": {"user": "admin", "password": "admin"}
+}

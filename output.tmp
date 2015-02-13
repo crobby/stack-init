@@ -1,0 +1,7 @@
+{
+"name": "sampleOutput",
+"description": "sample output",
+"type": "swift",
+"url": "swift://croberts.sahara/output",
+"credentials": {"user": "admin", "password": "admin"}
+}
